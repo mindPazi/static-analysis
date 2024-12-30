@@ -1,5 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
@@ -9,6 +11,7 @@ plugins {
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
     alias(libs.plugins.qodana) // Gradle Qodana Plugin
     alias(libs.plugins.kover) // Gradle Kover Plugin
+    id("org.jetbrains.grammarkit") version "2022.3.2.2" // Grammar-Kit Plugin
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -17,6 +20,15 @@ version = providers.gradleProperty("pluginVersion").get()
 // Set the JVM language level used to build the project.
 kotlin {
     jvmToolchain(21)
+}
+
+// Include generated sources
+sourceSets {
+    main {
+        java {
+            srcDirs("src/main/gen")
+        }
+    }
 }
 
 // Configure project's dependencies
@@ -48,6 +60,31 @@ dependencies {
         bundledModules(providers.gradleProperty("platformBundledModules").map { it.split(',') })
 
         testFramework(TestFrameworkType.Platform)
+    }
+}
+
+// Configure Grammar-Kit tasks
+val generateCobolParser = tasks.register<GenerateParserTask>("generateCobolParser") {
+    sourceFile.set(file("src/main/kotlin/com/github/mindpazi/staticanalysis/cobol/Cobol.bnf"))
+    targetRootOutputDir.set(file("src/main/gen"))
+    pathToParser.set("/com/github/mindpazi/staticanalysis/cobol/parser/CobolParser.java")
+    pathToPsiRoot.set("/com/github/mindpazi/staticanalysis/cobol/psi")
+    purgeOldFiles.set(true)
+}
+
+val generateCobolLexer = tasks.register<GenerateLexerTask>("generateCobolLexer") {
+    sourceFile.set(file("src/main/kotlin/com/github/mindpazi/staticanalysis/cobol/Cobol.flex"))
+    targetOutputDir.set(file("src/main/gen/com/github/mindpazi/staticanalysis/cobol"))
+    purgeOldFiles.set(true)
+}
+
+tasks {
+    compileKotlin {
+        dependsOn(generateCobolParser, generateCobolLexer)
+    }
+
+    compileJava {
+        dependsOn(generateCobolParser, generateCobolLexer)
     }
 }
 
