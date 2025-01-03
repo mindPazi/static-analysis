@@ -11,5 +11,14 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.mindpazi.staticanalysis.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.mindpazi.staticanalysis.startup.MyProjectActivity" />
+
+        <!-- COBOL Language Support -->
+        <fileType name="Cobol File" implementationClass="com.github.mindpazi.staticanalysis.cobol.CobolFileType" fieldName="INSTANCE" language="Cobol" extensions="cob;cbl;cobol"/>
+
+        <lang.parserDefinition language="Cobol" implementationClass="com.github.mindpazi.staticanalysis.cobol.CobolParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory language="Cobol" implementationClass="com.github.mindpazi.staticanalysis.cobol.CobolSyntaxHighlighterFactory"/>
+
+        <colorSettingsPage implementation="com.github.mindpazi.staticanalysis.cobol.CobolColorSettingsPage"/>
     </extensions>
 </idea-plugin>
