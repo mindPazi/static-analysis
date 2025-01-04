@@ -17,6 +17,6 @@ public interface CobolDataDefinition extends PsiElement {
   PsiElement getIdentifier();
 
   @NotNull
-  PsiElement getLevelNumber();
+  PsiElement getInteger();
 
 }

@@ -39,8 +39,6 @@
     EQUALS="="
 
     // Token types (defined by lexer)
-    LINE_NUMBER="regexp:[0-9]+"
-    LEVEL_NUMBER="regexp:[0-9]{1,2}"
     INTEGER="regexp:[0-9]+"
     IDENTIFIER="regexp:[A-Za-z][A-Za-z0-9\-]*"
     STRING="regexp:'[^']*'"
@@ -55,7 +53,7 @@ cobolFile ::= line*
 
 private line ::= numberedLine | CRLF | COMMENT
 
-numberedLine ::= LINE_NUMBER statement DOT?
+numberedLine ::= INTEGER statement DOT?
 
 private statement ::= identificationDivision
                     | programIdStatement
@@ -76,7 +74,7 @@ dataDivision ::= DATA DIVISION DOT
 
 workingStorageSection ::= WORKING_STORAGE SECTION DOT
 
-dataDefinition ::= LEVEL_NUMBER IDENTIFIER picClause? valueClause?
+dataDefinition ::= INTEGER IDENTIFIER picClause? valueClause?
 
 picClause ::= PIC PICTURE_STRING
 

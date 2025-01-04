@@ -38,6 +38,6 @@ public interface CobolNumberedLine extends PsiElement {
   CobolWorkingStorageSection getWorkingStorageSection();
 
   @NotNull
-  PsiElement getLineNumber();
+  PsiElement getInteger();
 
 }
