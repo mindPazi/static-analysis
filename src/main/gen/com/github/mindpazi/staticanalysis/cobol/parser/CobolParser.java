@@ -70,13 +70,13 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEVEL_NUMBER IDENTIFIER picClause? valueClause?
+  // INTEGER IDENTIFIER picClause? valueClause?
   public static boolean dataDefinition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "dataDefinition")) return false;
-    if (!nextTokenIs(builder_, LEVEL_NUMBER)) return false;
+    if (!nextTokenIs(builder_, INTEGER)) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeTokens(builder_, 0, LEVEL_NUMBER, IDENTIFIER);
+    result_ = consumeTokens(builder_, 0, INTEGER, IDENTIFIER);
     result_ = result_ && dataDefinition_2(builder_, level_ + 1);
     result_ = result_ && dataDefinition_3(builder_, level_ + 1);
     exit_section_(builder_, marker_, DATA_DEFINITION, result_);
@@ -172,13 +172,13 @@ public class CobolParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LINE_NUMBER statement DOT?
+  // INTEGER statement DOT?
   public static boolean numberedLine(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "numberedLine")) return false;
-    if (!nextTokenIs(builder_, LINE_NUMBER)) return false;
+    if (!nextTokenIs(builder_, INTEGER)) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeToken(builder_, LINE_NUMBER);
+    result_ = consumeToken(builder_, INTEGER);
     result_ = result_ && statement(builder_, level_ + 1);
     result_ = result_ && numberedLine_2(builder_, level_ + 1);
     exit_section_(builder_, marker_, NUMBERED_LINE, result_);

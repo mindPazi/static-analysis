@@ -47,8 +47,8 @@ public class CobolDataDefinitionImpl extends ASTWrapperPsiElement implements Cob
 
   @Override
   @NotNull
-  public PsiElement getLevelNumber() {
-    return findNotNullChildByType(LEVEL_NUMBER);
+  public PsiElement getInteger() {
+    return findNotNullChildByType(INTEGER);
   }
 
 }

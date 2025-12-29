@@ -36,8 +36,6 @@ public interface CobolTypes {
   IElementType IDENTIFICATION = new CobolTokenType("IDENTIFICATION");
   IElementType IDENTIFIER = new CobolTokenType("IDENTIFIER");
   IElementType INTEGER = new CobolTokenType("INTEGER");
-  IElementType LEVEL_NUMBER = new CobolTokenType("LEVEL_NUMBER");
-  IElementType LINE_NUMBER = new CobolTokenType("LINE_NUMBER");
   IElementType LPAREN = new CobolTokenType("(");
   IElementType PERFORM = new CobolTokenType("PERFORM");
   IElementType PIC = new CobolTokenType("PIC");

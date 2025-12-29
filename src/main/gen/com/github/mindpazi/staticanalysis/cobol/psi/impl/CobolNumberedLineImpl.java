@@ -89,8 +89,8 @@ public class CobolNumberedLineImpl extends ASTWrapperPsiElement implements Cobol
 
   @Override
   @NotNull
-  public PsiElement getLineNumber() {
-    return findNotNullChildByType(LINE_NUMBER);
+  public PsiElement getInteger() {
+    return findNotNullChildByType(INTEGER);
   }
 
 }
