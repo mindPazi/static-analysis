@@ -1,0 +1,99 @@
+{
+  parserClass="com.github.mindpazi.staticanalysis.cobol.parser.CobolParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Cobol"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.mindpazi.staticanalysis.cobol.psi"
+  psiImplPackage="com.github.mindpazi.staticanalysis.cobol.psi.impl"
+
+  elementTypeHolderClass="com.github.mindpazi.staticanalysis.cobol.psi.CobolTypes"
+  elementTypeClass="com.github.mindpazi.staticanalysis.cobol.psi.CobolElementType"
+  tokenTypeClass="com.github.mindpazi.staticanalysis.cobol.psi.CobolTokenType"
+
+  tokens = [
+    // Keywords
+    IDENTIFICATION="IDENTIFICATION"
+    DIVISION="DIVISION"
+    PROGRAM_ID="PROGRAM-ID"
+    DATA="DATA"
+    WORKING_STORAGE="WORKING-STORAGE"
+    SECTION="SECTION"
+    PROCEDURE="PROCEDURE"
+    PIC="PIC"
+    VALUE="VALUE"
+    PERFORM="PERFORM"
+    VARYING="VARYING"
+    FROM="FROM"
+    BY="BY"
+    UNTIL="UNTIL"
+    STOP="STOP"
+    RUN="RUN"
+    DISPLAY="DISPLAY"
+
+    // Punctuation
+    DOT="."
+    LPAREN="("
+    RPAREN=")"
+    EQUALS="="
+
+    // Token types (defined by lexer)
+    LINE_NUMBER="regexp:[0-9]+"
+    LEVEL_NUMBER="regexp:[0-9]{1,2}"
+    INTEGER="regexp:[0-9]+"
+    IDENTIFIER="regexp:[A-Za-z][A-Za-z0-9\-]*"
+    STRING="regexp:'[^']*'"
+    PICTURE_STRING="regexp:[9AX]+(\([0-9]+\))?"
+    CRLF="regexp:\R"
+    WHITE_SPACE="regexp:[ \t]+"
+    COMMENT="regexp:\*.*"
+  ]
+}
+
+cobolFile ::= line*
+
+private line ::= numberedLine | CRLF | COMMENT
+
+numberedLine ::= LINE_NUMBER statement DOT?
+
+private statement ::= identificationDivision
+                    | programIdStatement
+                    | dataDivision
+                    | workingStorageSection
+                    | dataDefinition
+                    | procedureDivision
+                    | paragraphDefinition
+                    | performStatement
+                    | stopStatement
+                    | displayStatement
+
+identificationDivision ::= IDENTIFICATION DIVISION DOT
+
+programIdStatement ::= PROGRAM_ID DOT IDENTIFIER DOT?
+
+dataDivision ::= DATA DIVISION DOT
+
+workingStorageSection ::= WORKING_STORAGE SECTION DOT
+
+dataDefinition ::= LEVEL_NUMBER IDENTIFIER picClause? valueClause?
+
+picClause ::= PIC PICTURE_STRING
+
+valueClause ::= VALUE (INTEGER | STRING | IDENTIFIER)
+
+procedureDivision ::= PROCEDURE DIVISION DOT
+
+paragraphDefinition ::= IDENTIFIER DOT
+
+performStatement ::= PERFORM IDENTIFIER varyingClause?
+
+varyingClause ::= VARYING IDENTIFIER FROM (INTEGER | IDENTIFIER) BY (INTEGER | IDENTIFIER) UNTIL condition
+
+condition ::= IDENTIFIER EQUALS (INTEGER | IDENTIFIER)
+
+stopStatement ::= STOP RUN
+
+displayStatement ::= DISPLAY displayItem+
+
+private displayItem ::= STRING | IDENTIFIER
