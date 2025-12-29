@@ -134,6 +134,16 @@ tasks {
     publishPlugin {
         dependsOn(patchChangelog)
     }
+
+    // Disable buildSearchableOptions to avoid memory leak
+    // Re-enable if plugin has extensive settings/configuration UI
+    buildSearchableOptions {
+        enabled = false
+    }
+
+    prepareJarSearchableOptions {
+        enabled = false
+    }
 }
 
 intellijPlatformTesting {
@@ -146,6 +156,7 @@ intellijPlatformTesting {
                         "-Dide.mac.message.dialogs.as.sheets=false",
                         "-Djb.privacy.policy.text=<!--999.999-->",
                         "-Djb.consents.confirmation.enabled=false",
+                        "-Djb.ui.gotit.enabled=false",
                     )
                 }
             }
