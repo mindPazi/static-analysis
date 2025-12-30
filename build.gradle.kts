@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
     alias(libs.plugins.qodana) // Gradle Qodana Plugin
     alias(libs.plugins.kover) // Gradle Kover Plugin
-    id("org.jetbrains.grammarkit") version "2022.3.2.2" // Grammar-Kit Plugin
+    id("org.jetbrains.grammarkit") version "2023.3.0.1" // Grammar-Kit Plugin
 }
 
 group = providers.gradleProperty("pluginGroup").get()
